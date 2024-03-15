@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const zoom = 7
+const basemap = ref("https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}")
 
 const geoJsonFiles = ref<{ filename: string; checked: boolean }[]>([
   { filename: "BATAS_KABUPATEN_KALIMANTAN_SELATAN", checked: true },
@@ -12,7 +13,7 @@ const geoJsonFiles = ref<{ filename: string; checked: boolean }[]>([
 <template>
   <LMap ref="map" :zoom="zoom" :center="[-2.731242, 115.41292]">
     <LTileLayer
-      url="https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}"
+      :url="basemap"
       attribution='&amp;copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
       layer-type="base"
       name="OpenStreetMap"
