@@ -16,5 +16,5 @@ onMounted(async () => {
 </script>
 
 <template>
-  <LGeoJson :geojson="geoLayer" :options-style="geoStyler"></LGeoJson>
+  <LGeoJson :geojson="geoLayer" :options-style="geoStyler" />
 </template>

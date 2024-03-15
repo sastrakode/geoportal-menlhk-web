@@ -1,4 +1,6 @@
 <script setup lang="ts">
+declare var L: any
+
 const zoom = 7
 const basemap = ref("https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}")
 
@@ -31,6 +33,47 @@ const navLinks = [
     },
   ],
 ]
+
+onMounted(async () => {
+  L.Marker.prototype.options.icon = L.icon({
+    iconUrl: "/marker.svg",
+    iconSize: [7, 7],
+  })
+
+  L.Marker.prototype.on("click", (e: any) => {
+    const data = e.target.feature.properties
+    const content = `
+    <table>
+      <tr>
+        <td>ID:</td>
+        <td>${data.ID}</td>
+      </tr>
+      <tr>
+        <td>NAMA:</td>
+        <td>${data.NAMA}</td>
+      </tr>
+      <tr>
+        <td>PROPINSI:</td>
+        <td>${data.PROPINSI}</td>
+      </tr>
+      <tr>
+        <td>STATUS:</td>
+        <td>${data.STATUS}</td>
+      </tr>
+      <tr>
+        <td>X_COORD:</td>
+        <td>${data.X_COORD}</td>
+      </tr>
+      <tr>
+        <td>Y_COORD:</td>
+        <td>${data.Y_COORD}</td>
+      </tr>
+    </table>
+    `
+
+    e.target.bindPopup(content).openPopup().closePopup()
+  })
+})
 </script>
 
 <template>
