@@ -5,7 +5,5 @@ useHead({
 </script>
 
 <template>
-  <div style="height: 100vh; width: 100vw">
-    <Map />
-  </div>
+  <Map />
 </template>

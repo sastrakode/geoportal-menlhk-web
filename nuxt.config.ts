@@ -6,5 +6,5 @@ export default defineNuxtConfig({
       redirect: { to: "/interaktif", statusCode: 302 },
     },
   },
-  modules: ["nuxt3-leaflet"],
+  modules: ["@nuxt/ui", "nuxt3-leaflet"],
 })
