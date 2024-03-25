@@ -11,29 +11,6 @@ const geoJsonFiles = ref<{ filename: string; checked: boolean }[]>([
   { filename: "BATAS_DESA_KALIMANTAN_SELATAN", checked: false },
 ])
 
-const navLinks = [
-  [
-    {
-      label: "Peta Interaktif",
-      icon: "i-heroicons-map-solid",
-    },
-  ],
-  [
-    {
-      label: "Base",
-      icon: "i-heroicons-squares-2x2-solid",
-    },
-    {
-      label: "Layer",
-      icon: "i-heroicons-square-3-stack-3d-solid",
-    },
-    {
-      label: "Upload",
-      icon: "i-heroicons-document-plus-solid",
-    },
-  ],
-]
-
 onMounted(async () => {
   L.Marker.prototype.options.icon = L.icon({
     iconUrl: "/marker.svg",
@@ -77,9 +54,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <UHorizontalNavigation :links="navLinks" />
+  <MapNavbar />
 
-  <div class="h-[calc(100vh-3em)] w-screen">
+  <div class="h-[calc(100vh-4em)] w-screen">
     <LMap ref="map" :zoom="zoom" :center="[-2.731242, 115.41292]">
       <LTileLayer :url="basemap" layer-type="base" name="OpenStreetMap" />
 
