@@ -1,15 +1,44 @@
 <script setup lang="ts">
 declare var L: any
-
 const zoom = 7
-const basemap = ref("https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}")
 
-const geoJsonFiles = ref<{ filename: string; checked: boolean }[]>([
-  { filename: "BATAS_KABUPATEN_KALIMANTAN_SELATAN", checked: true },
-  { filename: "JALAN_KALIMANTAN_SELATAN", checked: false },
-  { filename: "KAWASAN_HUTAN_PROVINSI_KALIMANTAN_SELATAN", checked: false },
-  { filename: "BATAS_DESA_KALIMANTAN_SELATAN", checked: false },
-])
+const baseMaps = [
+  {
+    name: "Satellite",
+    url: "https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}",
+  },
+  {
+    name: "Roads",
+    url: "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+  },
+  {
+    name: "Hybrid",
+    url: "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+  },
+]
+
+const selectedBaseMapUrl = ref(baseMaps[0].url)
+
+const geoJsonFiles = [
+  {
+    id: "01HSX1Q9W7J3SAS4VS4G2YY54V",
+    filename: "BATAS_KABUPATEN_KALIMANTAN_SELATAN",
+  },
+  {
+    id: "01HSX1S10DQ3RZANP31BZD1G61",
+    filename: "JALAN_KALIMANTAN_SELATAN",
+  },
+  {
+    id: "01HSX1S6C3WKH7NAYM0KQ6K874",
+    filename: "KAWASAN_HUTAN_PROVINSI_KALIMANTAN_SELATAN",
+  },
+  {
+    id: "01HSX1SB0E7A24RZDYW3XJAEE0",
+    filename: "BATAS_DESA_KALIMANTAN_SELATAN",
+  },
+]
+
+const selectedGeoJsonFiles = ref([geoJsonFiles[0]])
 
 onMounted(async () => {
   L.Marker.prototype.options.icon = L.icon({
@@ -54,17 +83,23 @@ onMounted(async () => {
 </script>
 
 <template>
-  <MapNavbar />
+  <MapNavbar
+    :base-maps="baseMaps"
+    v-model:selected-base-map-url="selectedBaseMapUrl"
+    :geo-json-files="geoJsonFiles"
+    v-model:selected-geo-json-files="selectedGeoJsonFiles"
+  />
 
-  <div class="h-[calc(100vh-4em)] w-screen">
+  <div class="h-[calc(100vh-4em)] w-screen z-0 absolute">
     <LMap ref="map" :zoom="zoom" :center="[-2.731242, 115.41292]">
-      <LTileLayer :url="basemap" layer-type="base" name="OpenStreetMap" />
+      <LTileLayer
+        :url="selectedBaseMapUrl"
+        layer-type="base"
+        name="OpenStreetMap"
+      />
 
-      <div v-for="(geoJsonFile, index) in geoJsonFiles" :key="index">
-        <MapPreparedLayer
-          v-if="geoJsonFile.checked"
-          :filename="geoJsonFile.filename"
-        />
+      <div v-for="geoJsonFile in selectedGeoJsonFiles" :key="geoJsonFile.id">
+        <MapPreparedLayer :filename="geoJsonFile.filename" />
       </div>
     </LMap>
   </div>
