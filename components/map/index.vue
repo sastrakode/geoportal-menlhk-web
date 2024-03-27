@@ -40,6 +40,19 @@ const geoJsonFiles = [
 
 const selectedGeoJsonFiles = ref([geoJsonFiles[0]])
 
+const uploadedGeoJsonFiles = ref<string[]>([])
+
+const handleFileUpload = (event: any) => {
+  const file = event.target.files[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = (e: any) => {
+    uploadedGeoJsonFiles.value.push(e.target.result)
+  }
+  reader.readAsText(file)
+}
+
 onMounted(async () => {
   L.Marker.prototype.options.icon = L.icon({
     iconUrl: "/marker.svg",
@@ -88,6 +101,7 @@ onMounted(async () => {
     v-model:selected-base-map-url="selectedBaseMapUrl"
     :geo-json-files="geoJsonFiles"
     v-model:selected-geo-json-files="selectedGeoJsonFiles"
+    v-model:handle-file-upload="handleFileUpload"
   />
 
   <div class="h-[calc(100vh-4em)] w-screen z-0 absolute">
@@ -100,6 +114,10 @@ onMounted(async () => {
 
       <div v-for="geoJsonFile in selectedGeoJsonFiles" :key="geoJsonFile.id">
         <MapPreparedLayer :filename="geoJsonFile.filename" />
+      </div>
+
+      <div v-for="(geoJsonFile, id) in uploadedGeoJsonFiles" :key="id">
+        <MapUploadedLayer :content="geoJsonFile" />
       </div>
     </LMap>
   </div>

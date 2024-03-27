@@ -13,6 +13,13 @@ const selectedGeoJsonFiles = defineModel("selectedGeoJsonFiles", {
   required: true,
   type: Array<Object>,
 })
+
+const handleFileUpload = defineModel<(payload: Event) => void>(
+  "handleFileUpload",
+  {
+    required: true,
+  }
+)
 </script>
 
 <template>
@@ -29,6 +36,7 @@ const selectedGeoJsonFiles = defineModel("selectedGeoJsonFiles", {
         <span class="truncate relative">Peta Interaktif</span>
       </a>
     </button>
+
     <ul class="flex items-center min-w-0">
       <li class="min-w-0">
         <USelectMenu
@@ -43,6 +51,7 @@ const selectedGeoJsonFiles = defineModel("selectedGeoJsonFiles", {
           </template>
         </USelectMenu>
       </li>
+
       <li class="min-w-0">
         <USelectMenu
           multiple
@@ -60,8 +69,9 @@ const selectedGeoJsonFiles = defineModel("selectedGeoJsonFiles", {
           </template>
         </USelectMenu>
       </li>
+
       <li>
-        <button
+        <label
           class="group relative w-full flex items-center gap-1.5 rounded-md font-medium text-sm focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 disabled:cursor-not-allowed disabled:opacity-75 before:absolute before:inset-x-0 before:inset-y-2 before:inset-px before:rounded-md hover:before:bg-gray-50 dark:hover:before:bg-gray-800/50 after:absolute after:bottom-0 after:inset-x-2.5 after:block after:h-[2px] after:mt-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
         >
           <UIcon
@@ -69,7 +79,8 @@ const selectedGeoJsonFiles = defineModel("selectedGeoJsonFiles", {
             class="flex-shrink-0 w-5 h-5 relative text-gray-400 dark:text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-200"
           />
           <span class="truncate relative">Upload</span>
-        </button>
+          <input type="file" @change="handleFileUpload" class="hidden" />
+        </label>
       </li>
     </ul>
   </nav>
