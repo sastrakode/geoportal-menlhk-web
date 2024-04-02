@@ -42,7 +42,7 @@ const selectedGeoJsonFiles = ref([geoJsonFiles[0]])
 
 const uploadedGeoJsonFiles = ref<string[]>([])
 
-const handleFileUpload = (event: any) => {
+function handleFileUpload(event: any) {
   const file = event.target.files[0]
   if (!file) return
 
