@@ -1,5 +1,6 @@
 <script setup lang="ts">
-declare var L: any
+import L from "leaflet"
+
 const zoom = 7
 
 const baseMaps = [
@@ -104,7 +105,7 @@ onMounted(async () => {
     v-model:handle-file-upload="handleFileUpload"
   />
 
-  <div class="h-[calc(100vh-4em)] w-screen z-0 absolute">
+  <div class="z-0 absolute w-screen h-[calc(100vh-4em)]">
     <LMap ref="map" :zoom="zoom" :center="[-2.731242, 115.41292]">
       <LTileLayer
         :url="selectedBaseMapUrl"
@@ -132,23 +133,27 @@ body {
   display: none;
 }
 
-html
-  body
-  .leaflet-control-container
-  .leaflet-top
-  .leaflet-control-zoom
-  a.leaflet-control-zoom-in {
-  background-color: black;
-  color: white;
+.leaflet-control-zoom.leaflet-bar.leaflet-control {
+  border: none;
 }
 
-html
-  body
-  .leaflet-control-container
-  .leaflet-top
-  .leaflet-control-zoom
-  a.leaflet-control-zoom-out {
+.leaflet-control-zoom a {
   background-color: black;
   color: white;
+  border: none;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #18181b;
+}
+
+.leaflet-control-zoom a:first-child {
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}
+
+.leaflet-control-zoom a:last-child {
+  border-bottom-left-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
 }
 </style>
