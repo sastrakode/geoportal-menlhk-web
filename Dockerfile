@@ -14,7 +14,7 @@ RUN apt-get update -qq && \
     dumb-init
 
 ENV NODE_ENV="production" \
-    NITRO_PRESET="node_cluster"
+    NITRO_PRESET="node_server"
 
 FROM base AS build
 
