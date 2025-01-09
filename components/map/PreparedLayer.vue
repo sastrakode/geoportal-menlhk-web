@@ -4,7 +4,10 @@ const props = defineProps<{
 }>()
 
 const geoStyler = (feature: any) => ({
-  opacity: feature.properties.code / 100000,
+  color: "#000000",
+  opacity: 1,
+  fillColor: "#F6F1D1",
+  fillOpacity: 1,
 })
 
 const geoLayer = ref(undefined)
