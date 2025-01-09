@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import L from "leaflet"
+import L, { type LeafletMouseEvent } from "leaflet"
 
 const zoom = 7
 
@@ -55,40 +55,46 @@ function handleFileUpload(event: any) {
 }
 
 onMounted(async () => {
-  L.Marker.prototype.options.icon = L.icon({
-    iconUrl: "/marker.svg",
-    iconSize: [7, 7],
-  })
+  L.Layer.prototype.on("click", (e: LeafletMouseEvent) => {
+    if (!e.target.feature) return
 
-  L.Marker.prototype.on("click", (e: any) => {
-    const data = e.target.feature.properties
+    const properties = e.target.feature.properties
     const content = `
-    <table>
-      <tr>
-        <td>ID:</td>
-        <td>${data.ID}</td>
-      </tr>
-      <tr>
-        <td>NAMA:</td>
-        <td>${data.NAMA}</td>
-      </tr>
-      <tr>
-        <td>PROPINSI:</td>
-        <td>${data.PROPINSI}</td>
-      </tr>
-      <tr>
-        <td>STATUS:</td>
-        <td>${data.STATUS}</td>
-      </tr>
-      <tr>
-        <td>X_COORD:</td>
-        <td>${data.X_COORD}</td>
-      </tr>
-      <tr>
-        <td>Y_COORD:</td>
-        <td>${data.Y_COORD}</td>
-      </tr>
-    </table>
+      <div class="max-h-[300px] overflow-y-auto" style="scrollbar-width: thin; scrollbar-color: #4B5563 #1F2937;">
+        <table class="border-collapse bg-gray-900 w-full min-w-[200px] max-w-[400px] text-white">
+        ${Object.entries(properties)
+          .map(
+            ([key, value]) => `
+            <tr class="border-gray-700 border-b">
+            <td class="px-2 py-1 font-semibold break-words">${key}:</td>
+            <td class="px-2 py-1 break-words">${value ?? ""}</td>
+            </tr>`
+          )
+          .join("")}
+        </table>
+      </div>
+      <style>
+      .leaflet-popup-content-wrapper {
+      background: #1F2937;
+      color: white;
+      }
+      .leaflet-popup-tip {
+      background: #1F2937;
+      }
+      ::-webkit-scrollbar {
+      width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+      background: #1F2937;
+      }
+      ::-webkit-scrollbar-thumb {
+      background: #4B5563;
+      border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+      background: #6B7280;
+      }
+      </style>
     `
 
     e.target.bindPopup(content).openPopup().closePopup()
