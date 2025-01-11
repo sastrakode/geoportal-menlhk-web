@@ -3,6 +3,10 @@ import L, { type LeafletMouseEvent } from "leaflet"
 
 const zoom = 7
 
+function generateId() {
+  return crypto.randomUUID()
+}
+
 const baseMaps = [
   {
     name: "Satellite",
@@ -20,37 +24,55 @@ const baseMaps = [
 
 const selectedBaseMapUrl = ref(baseMaps[0].url)
 
-const geoJsonFiles = [
+const geoJsonFiles = ref<
   {
-    id: "01HSX1Q9W7J3SAS4VS4G2YY54V",
-    filename: "BATAS_KABUPATEN_KALIMANTAN_SELATAN",
+    id: string
+    name: string
+    url?: string
+    data?: string
+  }[]
+>([
+  {
+    id: generateId(),
+    name: "BATAS KABUPATEN KALIMANTAN SELATAN",
+    url: "/geojson/BATAS_KABUPATEN_KALIMANTAN_SELATAN.geojson",
   },
   {
-    id: "01HSX1S10DQ3RZANP31BZD1G61",
-    filename: "JALAN_KALIMANTAN_SELATAN",
+    id: generateId(),
+    name: "JALAN KALIMANTAN SELATAN",
+    url: "/geojson/JALAN_KALIMANTAN_SELATAN.geojson",
   },
   {
-    id: "01HSX1S6C3WKH7NAYM0KQ6K874",
-    filename: "KAWASAN_HUTAN_PROVINSI_KALIMANTAN_SELATAN",
+    id: generateId(),
+    name: "KAWASAN HUTAN PROVINSI KALIMANTAN SELATAN",
+    url: "/geojson/KAWASAN_HUTAN_PROVINSI_KALIMANTAN_SELATAN.geojson",
   },
   {
-    id: "01HSX1SB0E7A24RZDYW3XJAEE0",
-    filename: "BATAS_DESA_KALIMANTAN_SELATAN",
+    id: generateId(),
+    name: "BATAS DESA KALIMANTAN SELATAN",
+    url: "/geojson/BATAS_DESA_KALIMANTAN_SELATAN.geojson",
   },
-]
+])
 
-const selectedGeoJsonFiles = ref([geoJsonFiles[0]])
+const selectedGeoJsonFiles = ref([geoJsonFiles.value[0]])
 
-const uploadedGeoJsonFiles = ref<string[]>([])
-
-function handleFileUpload(event: any) {
-  const file = event.target.files[0]
+function handleFileUpload(event: Event) {
+  const file = (event.target as HTMLInputElement).files?.[0]
   if (!file) return
 
   const reader = new FileReader()
-  reader.onload = (e: any) => {
-    uploadedGeoJsonFiles.value.push(e.target.result)
+  reader.onload = (e: ProgressEvent<FileReader>) => {
+    geoJsonFiles.value.push({
+      id: generateId(),
+      name: file.name,
+      data: e.target?.result as string,
+    })
+
+    selectedGeoJsonFiles.value.push(
+      geoJsonFiles.value[geoJsonFiles.value.length - 1]
+    )
   }
+
   reader.readAsText(file)
 }
 
@@ -106,7 +128,7 @@ onMounted(async () => {
   <MapNavbar
     :base-maps="baseMaps"
     v-model:selected-base-map-url="selectedBaseMapUrl"
-    :geo-json-files="geoJsonFiles"
+    v-model:geo-json-files="geoJsonFiles"
     v-model:selected-geo-json-files="selectedGeoJsonFiles"
     v-model:handle-file-upload="handleFileUpload"
   />
@@ -120,11 +142,7 @@ onMounted(async () => {
       />
 
       <div v-for="geoJsonFile in selectedGeoJsonFiles" :key="geoJsonFile.id">
-        <MapPreparedLayer :filename="geoJsonFile.filename" />
-      </div>
-
-      <div v-for="(geoJsonFile, id) in uploadedGeoJsonFiles" :key="id">
-        <MapUploadedLayer :content="geoJsonFile" />
+        <MapLayer :geo-url="geoJsonFile.url" :geo-data="geoJsonFile.data" />
       </div>
     </LMap>
   </div>

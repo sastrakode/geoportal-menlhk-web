@@ -1,8 +1,12 @@
 <script setup lang="ts">
-const { baseMaps, geoJsonFiles } = defineProps<{
+const { baseMaps } = defineProps<{
   baseMaps: { name: string; url: string }[]
-  geoJsonFiles: { id: string; filename: string }[]
 }>()
+
+const geoJsonFiles = defineModel("geoJsonFiles", {
+  required: true,
+  type: Array<Object>,
+})
 
 const selectedBaseMapUrl = defineModel("selectedBaseMapUrl", {
   required: true,
@@ -64,7 +68,7 @@ const handleFileUpload = defineModel<(payload: Event) => void>(
           </template>
           <template #option="{ option: geoJsonFile }">
             <span class="truncate">
-              {{ geoJsonFile.filename.replace("_", " ") }}
+              {{ geoJsonFile.name.replace("_", " ") }}
             </span>
           </template>
         </USelectMenu>
