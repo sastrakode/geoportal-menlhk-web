@@ -11,15 +11,17 @@
   },
   "dependencies": {
     "@iconify-json/heroicons": "^1.2.2",
-    "@nuxt/ui": "^2.20.0",
+    "@nuxt/ui": "^2.21.0",
     "@nuxtjs/leaflet": "^1.2.6",
     "leaflet": "^1.9.4",
-    "nuxt": "^3.15.1",
+    "nuxt": "^3.15.3",
+    "shpjs": "^6.1.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@types/leaflet": "^1.9.16"
+    "@types/leaflet": "^1.9.16",
+    "@types/shpjs": "^3.4.7"
   },
   "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a"
 }

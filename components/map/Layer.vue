@@ -1,21 +1,21 @@
 <script setup lang="ts">
 const props = defineProps<{
   geoUrl?: string
-  geoData?: string
+  geoData?: any
 }>()
 
 const geoStyler: L.StyleFunction = () => ({
   color: "#000000",
-  opacity: 1,
+  weight: 1,
   fillColor: "#F6F1D1",
-  fillOpacity: 1,
+  fillOpacity: 0.7,
 })
 
 const geoJson = ref(undefined)
 
 onMounted(async () => {
   if (props.geoData) {
-    geoJson.value = JSON.parse(props.geoData)
+    geoJson.value = props.geoData
   }
 
   if (props.geoUrl) {

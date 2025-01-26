@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import L, { type LeafletMouseEvent } from "leaflet"
+import shp from "shpjs"
 
 const zoom = 7
 
@@ -29,7 +30,7 @@ const geoJsonFiles = ref<
     id: string
     name: string
     url?: string
-    data?: string
+    data?: any
   }[]
 >([
   {
@@ -61,11 +62,27 @@ function handleFileUpload(event: Event) {
   if (!file) return
 
   const reader = new FileReader()
-  reader.onload = (e: ProgressEvent<FileReader>) => {
+  reader.onload = async (e: ProgressEvent<FileReader>) => {
+    const ext = file.name.split(".").pop()?.toLowerCase()
+    let data: any
+
+    switch (ext) {
+      case "geojson":
+        data = JSON.parse(e.target?.result as string)
+        break
+      case "zip":
+        const buffer = await file.arrayBuffer()
+        data = await shp(buffer)
+        break
+      default:
+        alert("Invalid file type")
+        return
+    }
+
     geoJsonFiles.value.push({
       id: generateId(),
       name: file.name,
-      data: e.target?.result as string,
+      data: data,
     })
 
     selectedGeoJsonFiles.value.push(
