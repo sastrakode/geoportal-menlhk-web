@@ -53,6 +53,11 @@ const geoJsonFiles = ref<
     name: "BATAS DESA KALIMANTAN SELATAN",
     url: "/geojson/BATAS_DESA_KALIMANTAN_SELATAN.geojson",
   },
+  {
+    id: generateId(),
+    name: "PENUNJUKAN KAWASAN",
+    url: "/geojson/PENUNJUKAN_KAWASAN.geojson",
+  },
 ])
 
 const selectedGeoJsonFiles = ref([geoJsonFiles.value[0]])
