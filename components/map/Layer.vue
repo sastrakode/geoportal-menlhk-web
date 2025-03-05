@@ -85,7 +85,13 @@ function getColorByFungsiJln(fungsiJln: string) {
 }
 
 const geoStyler: L.StyleFunction = (feature) => {
-  const options = {
+  const options: {
+    color: string
+    weight: number
+    fillColor: string
+    fillOpacity: number
+    dashArray?: string
+  } = {
     color: "#000000",
     weight: 1,
     fillColor: "#F6F1D1",
@@ -105,6 +111,12 @@ const geoStyler: L.StyleFunction = (feature) => {
   if (feature?.properties?.FUNGSI_JLN) {
     options.color = getColorByFungsiJln(feature.properties.FUNGSI_JLN)
     options.fillColor = options.color
+  }
+
+  if (props.geoUrl && feature?.properties?.Luas_Ha) {
+    options.weight = 2
+    options.fillOpacity = 0
+    options.dashArray = "5, 10"
   }
 
   return options
