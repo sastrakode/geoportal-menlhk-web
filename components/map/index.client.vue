@@ -100,7 +100,7 @@ onMounted(async () => {
     const properties = e.target.feature.properties
     const content = `
       <div class="max-h-[300px] overflow-y-auto" style="scrollbar-width: thin; scrollbar-color: #4B5563 #1F2937;">
-        <table class="border-collapse bg-gray-900 w-full min-w-[200px] max-w-[400px] text-white">
+        <table class="bg-gray-900 w-full min-w-[200px] max-w-[400px] text-white border-collapse">
         ${Object.entries(properties)
           .map(
             ([key, value]) => `
