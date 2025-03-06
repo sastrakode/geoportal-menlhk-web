@@ -2,6 +2,7 @@
 import L, { type LeafletMouseEvent } from "leaflet"
 import shp from "shpjs"
 
+const map = ref(null)
 const zoom = 7
 
 function generateId() {
@@ -117,28 +118,6 @@ onMounted(async () => {
           .join("")}
         </table>
       </div>
-      <style>
-      .leaflet-popup-content-wrapper {
-      background: #1F2937;
-      color: white;
-      }
-      .leaflet-popup-tip {
-      background: #1F2937;
-      }
-      ::-webkit-scrollbar {
-      width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-      background: #1F2937;
-      }
-      ::-webkit-scrollbar-thumb {
-      background: #4B5563;
-      border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-      background: #6B7280;
-      }
-      </style>
     `
 
     e.target.bindPopup(content).openPopup().closePopup()
@@ -149,13 +128,15 @@ onMounted(async () => {
 <template>
   <MapNavbar
     :base-maps="baseMaps"
+    v-model:map="map"
+    v-model:zoom="zoom"
     v-model:selected-base-map-url="selectedBaseMapUrl"
     v-model:geo-json-files="geoJsonFiles"
     v-model:selected-geo-json-files="selectedGeoJsonFiles"
     v-model:handle-file-upload="handleFileUpload"
   />
 
-  <div class="z-0 absolute w-screen h-[calc(100vh-4em)]">
+  <div id="map" class="z-0 absolute w-screen h-[calc(100vh-4em)]">
     <LMap ref="map" :zoom="zoom" :center="[-2.731242, 115.41292]">
       <LTileLayer
         :url="selectedBaseMapUrl"
@@ -201,5 +182,61 @@ body {
 .leaflet-control-zoom a:last-child {
   border-bottom-left-radius: 8px !important;
   border-bottom-right-radius: 8px !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #1f2937;
+  color: white;
+}
+
+.leaflet-popup-tip {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+@media print {
+  #navbar,
+  .leaflet-control-zoom {
+    display: none;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #map {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+@page {
+  size: Legal landscape;
+  margin: 0;
 }
 </style>
