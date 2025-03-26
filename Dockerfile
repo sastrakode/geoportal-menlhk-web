@@ -1,4 +1,4 @@
-FROM docker.io/library/node:22.14.0-bookworm-slim AS base
+FROM docker.io/library/node:22.14.0-slim AS base
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN apt-get update -qq && \
     dumb-init
 
 ENV NODE_ENV="production" \
-    NITRO_PRESET="node_server"
+    NITRO_PRESET="node_cluster"
 
 FROM base AS build
 
